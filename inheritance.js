@@ -44,8 +44,12 @@ var testObj = function() {
 		return testName;
 	},
 	
+	privateGetTestName = function() {
+		return testName;
+	},
+	
 	getAllNames = function() {
-		return returnObjects.getTestName() + ', ' + returnObjects.getObjName();
+		return getTestName() + ', ' + returnObjects.getObjName() + ", " + privateGetTestName();
 	},
 	
 	// this has the same name as a function in the inherited base classes
@@ -59,9 +63,9 @@ var testObj = function() {
 		returnObjects.baseInit(on);
 	};
 	
-	// the rest of this code to the bottom of the object is required for the inheritance
-	// the code below MUST be the last code in the object
-	// required object to list the public members, do not change the name, only add your public members
+	// the rest of this code to the bottom of the object is required for the inheritance and interface implementation
+	// this code below MUST be the last line of code in the object that you define
+	// required object to list the public members, do not change the name, only add your members that you intend to be public
 	var returnObjects = {
 		// expose all of your public members here
 		getTestName: getTestName,
@@ -153,13 +157,19 @@ t.init("test name", "object Name");
 console.log(t.getAllNames());
 t.display2();
 
+var t2 = new testObj(new baseObj(), "ITestObject",new baseObj2(),true);
+t2.init("test name 2", "object name 2");
+console.log(t2.getAllNames());
+
+console.log(t.getAllNames());
+
 /*
 key points:
 	1. allows for multiple inheritance
 		a. **NOTE: inheritance is done on a FIFO basis.  e.g. if two base objects contain the same members, the first base object is
 					the member inherited
 	2. allows for interface validation
-		b. all interfaces specified are passed as strings and all 
+		b. all interfaces specified are passed as strings and all required methods 
 	3. allows for interface member defaulting
 		a. last argument in the constructor can be a boolean or not specified
 		b. if not specified, assume false
